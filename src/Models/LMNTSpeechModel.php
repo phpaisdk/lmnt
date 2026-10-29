@@ -6,6 +6,7 @@ namespace AiSdk\LMNT\Models;
 
 use AiSdk\Contracts\BaseModel;
 use AiSdk\Contracts\SpeechModelInterface;
+use AiSdk\Exceptions\InvalidArgumentException;
 use AiSdk\LMNT\LMNTOptions;
 use AiSdk\Requests\SpeechRequest;
 use AiSdk\Responses\SpeechResponse;
@@ -30,7 +31,7 @@ final class LMNTSpeechModel extends BaseModel implements SpeechModelInterface
         $options = $request->providerOptionsFor($this->provider());
         $voice = $request->voice ?? ($options['voice_id'] ?? null);
         if (! is_string($voice) || $voice === '') {
-            throw new \InvalidArgumentException('LMNT speech requires ->voice("voice-id").');
+            throw new InvalidArgumentException('LMNT speech requires ->voice("voice-id").');
         }
         unset($options['voice_id']);
         $format = in_array($request->format, ['mp3', 'wav', 'pcm'], true) ? $request->format : 'mp3';
